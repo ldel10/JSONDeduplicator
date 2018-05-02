@@ -1,0 +1,68 @@
+package marketo;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+
+public class HandleJson {
+	
+	public HandleJson(){
+		
+	}
+	
+	public static JSONArray getLeads(File input){
+		JSONArray leads = null;
+		try {
+			JSONObject jsonObject = (JSONObject) JSONValue.parse(new FileReader(input));
+			leads = (JSONArray) jsonObject.get("leads");
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		}
+		return leads;
+	}
+	
+	/**
+	 * dedup takes in a JSON array and returns a JSONArray with no duplicates
+	 */
+	@SuppressWarnings("unchecked")
+	public static ArrayList<Lead> dedupe(JSONArray originalLeads){
+		
+		ArrayList<Lead> deduped = new ArrayList<Lead>();
+		
+		Iterator<JSONObject> iter = originalLeads.iterator();
+		while(iter.hasNext()){
+			//loop through temp list to check for duplicates
+			Lead current = new Lead(iter.next());
+			compareLeads(deduped, current);
+		}
+		return deduped;
+	}
+	
+	
+	public static void compareLeads(ArrayList<Lead> deduped, Lead curr){
+		for(Lead lead : deduped){
+			if( lead.emailAddress.equals(curr.emailAddress)|| lead._id.equals(curr._id)){
+				//duplicate found, must compare entry dates
+				if(lead.entryDate.after(curr.entryDate)){
+					//do not replace
+				}
+				else{
+					//replace original duplicate with entry with later date
+					deduped.remove(lead);
+					deduped.add(curr);
+					return;
+				}
+			}
+		}
+		
+	}
+	
+}

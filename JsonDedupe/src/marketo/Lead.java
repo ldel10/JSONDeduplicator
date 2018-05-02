@@ -1,0 +1,30 @@
+package marketo;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.json.simple.JSONObject;
+
+public class Lead {
+
+	//attributes for comparison HandleJson.compareLeads()
+	public String _id;
+	public String emailAddress;
+	public Date entryDate;
+	
+	//original json object for output in HandleJson.writeToOutput()
+	public JSONObject obj;
+	
+	public Lead(JSONObject lead){
+		this._id = lead.get("_id").toString();
+		this.emailAddress = lead.get("email").toString();
+		this.obj = lead;
+		try {
+			DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+			this.entryDate = date.parse(lead.get("entryDate").toString());
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+}

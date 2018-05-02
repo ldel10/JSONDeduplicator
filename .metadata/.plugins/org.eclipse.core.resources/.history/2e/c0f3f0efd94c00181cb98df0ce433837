@@ -1,0 +1,22 @@
+package marketo;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
+import org.json.simple.*;
+
+public class MainChallenge {
+
+	public static void main(String[] args){
+		
+		
+		File input = new File(args[0]);
+		try {
+			JSONObject jsonOJbect = (JSONObject) JSONValue.parse(new FileReader(input));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+}

@@ -1,0 +1,20 @@
+package marketo;
+
+import java.util.Date;
+
+import org.json.simple.JSONObject;
+
+public class Lead {
+
+	//attributes for comparison
+	public String _id;
+	public String emailAddress;
+	public Date entryDate;
+	
+	//original json object
+	public JSONObject obj;
+	
+	public Lead(JSONObject lead){
+		this._id = lead.get("_id").toString();
+	}
+}

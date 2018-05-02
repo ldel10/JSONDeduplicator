@@ -1,0 +1,10 @@
+package marketo;
+
+import org.json.simple.*;
+
+public class MainChallenge {
+
+	public static void main(String[] args){
+		System.out.println(args[0]);
+	}
+}
